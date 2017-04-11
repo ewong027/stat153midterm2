@@ -1,5 +1,5 @@
 
-#adding 1.5v to data and took the logg transform
+#adding 1.5v to data and took the log transform
 plot(log(ts1+ 1.5))
 ts2 <- log(ts1+ 1.5)
 
@@ -70,6 +70,21 @@ sum(mse2)/4
 sum(mse3)/4
 sum(mse4)/4
 sum(mse5)/4
+
+# Cross-Validation as a Function:
+CV <- function(test_order, test_seasonality, test_period){
+  mse <- NULL
+  leng <- length(ts2)
+  for (i in 4:1){
+    train <- ts2[1:(leng - i*104)]
+    test <- ts2[(leng - i*104 + 1):(leng - (i-1)*104)]
+    mod_train <- arima(ts2, order = test_order, seasonal = list(order = test_seasonality, 
+                                                                period= test_period))
+    forcast <- predict(mod_train, n.ahead = 104)
+    mse[i] <- mean((exp(forcast$pred) - exp(test))^2)
+  }
+  return(mse)
+}
 
 mod_test <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test2 <- arima(ts2, order = c(5,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
