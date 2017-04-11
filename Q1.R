@@ -13,4 +13,11 @@ plot(ts4, type = "l")
 acf(ts4) #MA(1) leading 
 pacf(ts4)
 
-auto.arima(ts4)
+mod <- arima(ts4, order = c(5, 0, 1))
+AIC(mod)
+BIC(mod)
+length(ts4)
+
+#CV score
+sum((m1$residuals^2)/((1 - influence(m1)$hat)^2))
+
