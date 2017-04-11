@@ -71,13 +71,14 @@ sum(mse3)/4
 sum(mse4)/4
 sum(mse5)/4
 
+mod_test <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(ts2, order = c(5,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+
 #forcasting
-preds <- predict(mod, n.ahead = 104)
+preds <- predict(mod_test, n.ahead = 104)
+preds2 <- exp(preds$pred) - 1.5
+plot(c(ts1, preds2), type = "l")
 
-preds1 <- cumsum(cumsum(preds$pred))
-preds2 <- exp(preds1) - 1.5
-
-
-
-plot(preds2, type = "l")
-plot(ts1)
+preds <- predict(mod_test2, n.ahead = 104)
+preds2 <- exp(preds$pred) - 1.5
+plot(c(ts1, preds2), type = "l")
