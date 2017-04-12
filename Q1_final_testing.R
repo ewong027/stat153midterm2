@@ -93,5 +93,5 @@ preds2 <- exp(preds$pred) - 1.5
 plot(c(ts1, preds2), type = "l")
 
 preds_1 <- predict(mod_test1, n.ahead = 104)
-preds2_1 <- exp(preds$pred) - 1.5
+preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts1, preds2_1), type = "l")
