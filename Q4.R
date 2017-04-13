@@ -13,7 +13,7 @@ plot(diff(ts_4), type = "l")
 #also helps to apply a log transformation to the data
 log_ts4 <- log(ts_4 + 1.5)
 
-#HERE$$$$$$$$$$$$$$$$$
+#testing out the log data
 auto.arima(log_ts4)
 
 #plotting acf and pacf to see what kind of model the resulting differenced 
@@ -33,7 +33,7 @@ auto.arima(log_ts4)
 
 CV4 <- function(test_order, test_seasonality, test_period){
   mse <- NULL
-  leng <- length(ts2)
+  leng <- length(log_ts4)
   for (i in 4:1){
     train <- log_ts4[1:(leng - i*105)]
     test <- log_ts4[(leng - i*105 + 1):(leng - (i-1)*105)]
@@ -66,10 +66,11 @@ sum(mse6)/4
 #Let us check AIC and BIC to see what model is chosen
 mod_test1 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test2 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(log_ts4, order = c(3,1,4))
-mod_test4 <- arima(log_ts4, order = c(4,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test5 <- arima(log_ts4, order = c(3,1,1))
-mod_test6 <- arima(log_ts4, order = c(3,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test3 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test4 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test5 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
+
 
 AIC(mod_test1)
 AIC(mod_test2)
@@ -78,19 +79,23 @@ AIC(mod_test4)
 AIC(mod_test5)
 AIC(mod_test6)
 
+
 BIC(mod_test1)
 BIC(mod_test2)
 BIC(mod_test3)
 BIC(mod_test4)
 BIC(mod_test5)
 BIC(mod_test6)
-                                                       
+
+
 preds <- predict(mod_test1, n.ahead = 104)
 plot(c(ts_4, preds$pred), type = "l")
 
 preds <- predict(mod_test2, n.ahead = 104)
 plot(c(ts_4, preds$pred), type = "l")
 
-preds <- predict(mod_test2, n.ahead = 104)
+preds <- predict(mod_test6, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_4, preds2), type = "l")
+
+#I like 1 or 2
