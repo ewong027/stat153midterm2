@@ -95,3 +95,6 @@ plot(c(ts1, preds2), type = "l")
 preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts1, preds2_1), type = "l")
+
+write.table(preds2_1, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
+

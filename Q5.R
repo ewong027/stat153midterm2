@@ -55,9 +55,9 @@ sum(mse6)/4
 #the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52)
 
 #Let us check AIC and BIC to see what model is chosen
-mod_test1 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 25))
+mod_test1 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test2 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 30))
-mod_test3 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 25))
+mod_test3 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test4 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 30))
 
 mod_test5 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
@@ -83,3 +83,5 @@ BIC(mod_test6)
 preds <- predict(mod_test1, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_5, preds2), type = "l")
+
+write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q5_Bryana_Gutierrez_24504003.txt")

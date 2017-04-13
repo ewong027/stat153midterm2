@@ -72,3 +72,5 @@ preds <- predict(mod_test6, n.ahead = 104)
 preds2 <- (preds$pred)^2 - 1.5
 plot(c(ts3, preds2), type = "l")
 
+write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q3_Bryana_Gutierrez_24504003.txt")
+

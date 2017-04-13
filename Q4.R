@@ -31,6 +31,7 @@ pacf((log_ts4), lag.max = 100)
 auto.arima(ts_4)
 auto.arima(log_ts4)
 
+#Cross validation function
 CV4 <- function(test_order, test_seasonality, test_period){
   mse <- NULL
   leng <- length(log_ts4)
@@ -48,10 +49,10 @@ CV4 <- function(test_order, test_seasonality, test_period){
 #Running Cross-Validation on different models
 mse1 <- CV4(c(3,1,1),c(1, 0, 1),52)
 mse2 <- CV4(c(3,1,4),c(1, 0, 1),52)
-mse3 <- CV4(c(3,1,4),c(0, 0, 0),NA)
-mse4 <- CV4(c(4,1,1),c(1, 0, 1),52)
-mse5 <- CV4(c(3,1,1),c(0, 0, 0),NA)
-mse6 <- CV4(c(3,1,2),c(1, 0, 1),52)
+mse3 <- CV4(c(3,1,4),c(0, 0, 1),52)
+mse4 <- CV4(c(3,1,1),c(0, 0, 1),52)
+mse5 <- CV4(c(0,1,1),c(1, 0, 1),52)
+mse6 <- CV4(c(0,1,1),c(1, 0, 1),52)
 
 
 sum(mse1)/4
@@ -94,8 +95,10 @@ plot(c(ts_4, preds$pred), type = "l")
 preds <- predict(mod_test2, n.ahead = 104)
 plot(c(ts_4, preds$pred), type = "l")
 
-preds <- predict(mod_test6, n.ahead = 104)
+preds <- predict(mod_test2, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_4, preds2), type = "l")
 
 #I like 1 or 2
+
+write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q4_Bryana_Gutierrez_24504003.txt")

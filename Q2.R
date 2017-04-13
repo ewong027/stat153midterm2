@@ -71,3 +71,5 @@ BIC(mod_test6)
 preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts2, preds2_1), type = "l")
+
+write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q2_Bryana_Gutierrez_24504003.txt")
