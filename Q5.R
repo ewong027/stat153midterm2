@@ -8,7 +8,7 @@ data5_df$Date <- 1:nrow(data5)
 ts_5 <- data5_df$activity
 
 #EDA
-plot(diff(ts_5), type = "l")
+plot(log(ts_5 + 1.5), type = "l")
 acf(diff(ts_5), lag.max = 100)
 pacf(diff(ts_5))
 
@@ -21,3 +21,6 @@ plot((ts_5+ 1), type = 'l')
 ts2 <- log(ts1+ 1.5)
 
 auto.arima(ts_5)
+#3,1,5
+
+auto.arima(log(ts_5 +1.5))
