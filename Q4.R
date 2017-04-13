@@ -2,7 +2,7 @@
 data4 <- read.csv("q4_train.csv", as.is = TRUE)
 plot(data4$activity, type = 'l')
 data4_df <- data.frame(ts(data4))
-data4_df$Date <- 1:nrow(data1)
+data4_df$Date <- 1:nrow(data4)
 
 #Cleaning up data 
 ts_4 <- data4_df$activity  
@@ -10,12 +10,87 @@ ts_4 <- data4_df$activity
 #data appears to be made stationary by differencing
 plot(diff(ts_4), type = "l")
 
+#also helps to apply a log transformation to the data
+log_ts4 <- log(ts_4 + 1.5)
+
+#HERE$$$$$$$$$$$$$$$$$
+auto.arima(log_ts4)
+
 #plotting acf and pacf to see what kind of model the resulting differenced 
 #data follows
-acf(diff(ts_4))
-pacf(diff(ts_4))
+acf(diff(ts_4), lag.max = 100)
+pacf(diff(ts_4), lag.max = 100)
+
+acf(diff(log_ts4), lag.max = 100)
+pacf((log_ts4), lag.max = 100)
 
 
 #MA(1), AR(2) with the diffferenced data
+#3,1,4
 
 auto.arima(ts_4)
+auto.arima(log_ts4)
+
+CV4 <- function(test_order, test_seasonality, test_period){
+  mse <- NULL
+  leng <- length(ts2)
+  for (i in 4:1){
+    train <- log_ts4[1:(leng - i*105)]
+    test <- log_ts4[(leng - i*105 + 1):(leng - (i-1)*105)]
+    mod_train <- arima(log_ts4, order = test_order, seasonal = list(order = test_seasonality, 
+                                                                period= test_period))
+    forcast <- predict(mod_train, n.ahead = 105)
+    mse[i] <- mean((exp(forcast$pred) - exp(test))^2)
+  }
+  return(mse)
+}
+
+#Running Cross-Validation on different models
+mse1 <- CV4(c(3,1,1),c(1, 0, 1),52)
+mse2 <- CV4(c(3,1,4),c(1, 0, 1),52)
+mse3 <- CV4(c(3,1,4),c(0, 0, 0),NA)
+mse4 <- CV4(c(4,1,1),c(1, 0, 1),52)
+mse5 <- CV4(c(3,1,1),c(0, 0, 0),NA)
+mse6 <- CV4(c(3,1,2),c(1, 0, 1),52)
+
+
+sum(mse1)/4
+sum(mse2)/4
+sum(mse3)/4
+sum(mse4)/4
+sum(mse5)/4
+sum(mse6)/4
+
+#the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52)
+
+#Let us check AIC and BIC to see what model is chosen
+mod_test1 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test3 <- arima(log_ts4, order = c(3,1,4))
+mod_test4 <- arima(log_ts4, order = c(4,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test5 <- arima(log_ts4, order = c(3,1,1))
+mod_test6 <- arima(log_ts4, order = c(3,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+
+AIC(mod_test1)
+AIC(mod_test2)
+AIC(mod_test3)
+AIC(mod_test4)
+AIC(mod_test5)
+AIC(mod_test6)
+
+BIC(mod_test1)
+BIC(mod_test2)
+BIC(mod_test3)
+BIC(mod_test4)
+BIC(mod_test5)
+BIC(mod_test6)
+                                                       
+preds <- predict(mod_test1, n.ahead = 104)
+plot(c(ts_4, preds$pred), type = "l")
+
+preds <- predict(mod_test2, n.ahead = 104)
+plot(c(ts_4, preds$pred), type = "l")
+
+preds <- predict(mod_test2, n.ahead = 104)
+preds2 <- exp(preds$pred) - 1.5
+plot(c(ts_4, preds2), type = "l")
