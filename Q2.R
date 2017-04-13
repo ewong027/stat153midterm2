@@ -68,10 +68,6 @@ BIC(mod_test5)
 BIC(mod_test6)
 
 #forcasting both of these models look the same, i think the second one looks slightly better
-preds <- predict(mod_test2, n.ahead = 105)
-preds2 <- exp(preds$pred) - 1.5
-plot(c(ts2, preds2), type = "l")
-
-preds_1 <- predict(mod_test1, n.ahead = 105)
+preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts2, preds2_1), type = "l")

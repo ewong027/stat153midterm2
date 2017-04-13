@@ -47,32 +47,28 @@ sum(mse5)/4
 sum(mse6)/4
 
 mod_test1 <- arima(ts3_adj, order = c(3,1,3), seasonal = list(order = c(1, 0, 1), period = 52))
-#mod_test2 <- arima(ts2_adj, order = c(2,1,0), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(ts3_adj, order = c(3,1,3))
+mod_test2 <- arima(ts2_adj, order = c(3,1,3), seasonal = list(order = c(1, 0, 2), period = 52))
+mod_test3 <- arima(ts3_adj, order = c(3,1,3), seasonal = list(order = c(0, 0, 1), period = 52))
 mod_test4 <- arima(ts3_adj, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test5 <- arima(ts3_adj, order = c(3,1,2))
 mod_test6 <- arima(ts3_adj, order = c(1,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
 
 AIC(mod_test1)
-#AIC(mod_test2)
+AIC(mod_test2)
 AIC(mod_test3)
 AIC(mod_test4)
 AIC(mod_test5)
 AIC(mod_test6)
 
 BIC(mod_test1)
-#BIC(mod_test2)
+BIC(mod_test2)
 BIC(mod_test3)
 BIC(mod_test4)
 BIC(mod_test5)
 BIC(mod_test6)
 
 #forcasting both of these models look the same, i think the second one looks slightly better
-preds <- predict(mod_test6, n.ahead = 105)
+preds <- predict(mod_test6, n.ahead = 104)
 preds2 <- (preds$pred)^2 - 1.5
 plot(c(ts3, preds2), type = "l")
-
-preds_1 <- predict(mod_test4, n.ahead = 105)
-preds2_1 <- (preds_1$pred)^2 - 1.5
-plot(c(ts3, preds2_1), type = "l")
 
