@@ -62,12 +62,11 @@ sum(mse4)/4
 sum(mse5)/4
 sum(mse6)/4
 
-#the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52)
 
 #Let us check AIC and BIC to see what model is chosen
 mod_test1 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test2 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test3 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 1, 1), period = 52))
 mod_test4 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
 mod_test5 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test6 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
@@ -88,17 +87,11 @@ BIC(mod_test4)
 BIC(mod_test5)
 BIC(mod_test6)
 
-
-preds <- predict(mod_test1, n.ahead = 104)
-plot(c(ts_4, preds$pred), type = "l")
-
-preds <- predict(mod_test2, n.ahead = 104)
-plot(c(ts_4, preds$pred), type = "l")
+#The second model is the best 
 
 preds <- predict(mod_test2, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_4, preds2), type = "l")
 
-#I like 1 or 2
 
 write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q4_Bryana_Gutierrez_24504003.txt")
