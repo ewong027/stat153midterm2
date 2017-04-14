@@ -78,7 +78,7 @@ BIC(mod_test6)
 
 #The second model is the best 
 
-preds <- predict(mod_test2, n.ahead = 104)
+preds <- predict(mod_test1, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_5, preds2), type = "l")
 
