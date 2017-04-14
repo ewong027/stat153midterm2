@@ -37,12 +37,12 @@ CV5 <- function(test_order, test_seasonality, test_period){
 }
 
 #Running Cross-Validation on different models
-mse1 <- CV4(c(3,1,1),c(1, 0, 1),52)
-mse2 <- CV4(c(3,1,4),c(1, 0, 1),52)
-mse3 <- CV4(c(3,1,4),c(0, 0, 0),NA)
-mse4 <- CV4(c(4,1,1),c(1, 0, 1),52)
-mse5 <- CV4(c(3,1,1),c(0, 0, 0),NA)
-mse6 <- CV4(c(3,1,2),c(1, 0, 1),52)
+mse1 <- CV4(c(3,1,5),c(1, 0, 1),52)
+mse2 <- CV4(c(3,1,5),c(1, 1, 1),52)
+mse3 <- CV4(c(2,1,1),c(1, 0, 1),52)
+mse4 <- CV4(c(2,1,1),c(1, 1, 1),52)
+mse5 <- CV4(c(0,1,1),c(1, 0, 1),52)
+mse6 <- CV4(c(0,1,1),c(1, 1, 1),52)
 
 
 sum(mse1)/4
@@ -52,16 +52,13 @@ sum(mse4)/4
 sum(mse5)/4
 sum(mse6)/4
 
-#the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52)
-
 #Let us check AIC and BIC to see what model is chosen
 mod_test1 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 30))
+mod_test2 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 1, 1), period = 52))
 mod_test3 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test4 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 30))
-
+mod_test4 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 1, 1), period = 52))
 mod_test5 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test6 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test6 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(1, 1, 1), period = 52))
 
 
 AIC(mod_test1)
@@ -79,8 +76,9 @@ BIC(mod_test4)
 BIC(mod_test5)
 BIC(mod_test6)
 
+#The second model is the best 
 
-preds <- predict(mod_test1, n.ahead = 104)
+preds <- predict(mod_test2, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_5, preds2), type = "l")
 
