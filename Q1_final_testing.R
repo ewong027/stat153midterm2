@@ -34,11 +34,11 @@ CV <- function(test_order, test_seasonality, test_period){
   mse <- NULL
   leng <- length(ts2)
   for (i in 4:1){
-    train <- ts2[1:(leng - i*104)]
-    test <- ts2[(leng - i*104 + 1):(leng - (i-1)*104)]
+    train <- ts2[1:(leng - i*105)]
+    test <- ts2[(leng - i*105 + 1):(leng - (i-1)*105)]
     mod_train <- arima(ts2, order = test_order, seasonal = list(order = test_seasonality, 
                                                                 period= test_period))
-    forcast <- predict(mod_train, n.ahead = 104)
+    forcast <- predict(mod_train, n.ahead = 105)
     mse[i] <- mean((exp(forcast$pred) - exp(test))^2)
   }
   return(mse)
@@ -48,9 +48,9 @@ CV <- function(test_order, test_seasonality, test_period){
 #but from our graph we can see that there is some seasonality, so we wanted to test that
 mse1 <- CV(c(4,1,2),c(1, 0, 1),52)
 mse2 <- CV(c(4,2,2),c(1, 0, 1),52)
-mse3 <- CV(c(4,1,2),c(0, 0, 0),NA)
+mse3 <- CV(c(4,1,2),c(0, 0, 1),52)
 mse4 <- CV(c(5,1,2),c(1, 0, 1),52)
-mse5 <- CV(c(5,1,2),c(0, 0, 0),NA)
+mse5 <- CV(c(4,1,3),c(1, 0, 1),52)
 mse6 <- CV(c(4,1,1),c(1, 0, 1),52)
 
 sum(mse1)/4
@@ -60,14 +60,15 @@ sum(mse4)/4
 sum(mse5)/4
 sum(mse6)/4
 
-#the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52)
+#the smallest MSE is mse1, so the model choosen is CV(c(4,1,2),c(1, 0, 1),52), models 4 and 5
+#produced errors which may imply that it is not the best idea to use them
 
 #Let us check AIC and BIC to see what model is chosen
 mod_test1 <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test2 <- arima(ts2, order = c(4,2,2), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(ts2, order = c(4,1,2))
+mod_test3 <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(0, 0, 1), period = 52))
 mod_test4 <- arima(ts2, order = c(5,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test5 <- arima(ts2, order = c(5,1,2))
+mod_test5 <- arima(ts2, order = c(4,1,3), seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test6 <- arima(ts2, order = c(4,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
 
 AIC(mod_test1)
@@ -96,5 +97,8 @@ preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts1, preds2_1), type = "l")
 
-write.table(preds2_1, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
+#there was not a difference between the graphs, but we ended up choosing model 1 because we found that
+#the AIC and BIC were fairly close to that of model 6
+
+write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
 
