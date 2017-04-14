@@ -1,0 +1,47 @@
+---
+title: "Midterm Two Project"
+author: "Erica Wong and Bryana Gutierrez"
+date: "April 18, 2017"
+output: html_document
+---
+```{r, include = FALSE}
+#Loading the Data:
+data1 <- read.csv("datasets/q1_train.csv", as.is = TRUE)
+data1_df <- data.frame(ts(data1))
+data1_df$Date <- 1:nrow(data1)
+
+#Cleaning the Data:
+ts1 <- data1$activity
+```
+In this project we received data and were tasked with coming up with the best predictions for the next 104 data points. Since our data are all time series, we took the time series approach. For the purposes of this report, we focused on the first data set Q1. Our first step was to load and format the data so that we may work with it. Then we checked to make sure that the data didn't have any missing values. Q1 did not contain any missing values so then we proceeded to plot the data. 
+
+```{r}
+plot(ts1, type = "l")
+```
+From this plot, we can see that the variance of the data increases with time. Also, given the slight upward trend, we considered that the data might need to be differenced. To deal with the increase in variance we took the log of the data. Since there are negative values in the data, we added a constant of 1.5 which would later be subtracted when we calculated the predictions. The log transformed data looks as follows:
+
+```{r}
+#Taking the log to get rid of the trend
+ts2 <- log(ts1+ 1.5)
+plot(ts2, type = 'l')
+```
+This helped take care of the variance that increases with time. Now it almost looks like the data decreases in variance with time. There is still a slight upward trend in the data, to take care of this we differenced the data. This is how the differenced data looked like. 
+```{r}
+#Doing Different Transformations to get a better idea of the wanted model
+#took difference twice so data looked reasonably stationary 
+ts3 <- diff(ts2)
+plot(ts3, type = "l")
+```
+This looked fairly stationary. So we moved on to look at what the ACF and PACF could tell us about the remaining data. 
+
+```{r}
+#plotted acf
+acf(ts3)
+pacf(ts3)
+```
+We can see that there is some strong AR presence from the large PACF values and also some MA presence from some high values in the ACF plot. To give us an initial guess at the ARIMA distribution, we used auto.arima. Since an ARIMA model takes differencing into consideration, we used the data prior to differencing for the auto.arima function. R gave us the following output:
+```{r}
+#running auto.arima to get a better idea of what the model is
+auto.arima(ts2)
+```
+We only used this as an initial guess and began to build similar models to do some model selection. 
