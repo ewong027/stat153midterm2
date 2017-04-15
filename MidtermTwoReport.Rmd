@@ -159,7 +159,7 @@ The plots only vary slightly, so we decided to go with model 6 because overall w
 
 #Apendix
 ##Q1 Code
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 #Loading the Data:
 data1 <- read.csv("q1_train.csv", as.is = TRUE)
 plot(data1$activity, type = 'l')
@@ -226,12 +226,18 @@ sum(mse6)/4
 #produced errors which may imply that it is not the best idea to use them
 
 #Let us check AIC and BIC to see what model is chosen
-mod_test1 <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(ts2, order = c(4,2,2), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(ts2, order = c(4,1,2), seasonal = list(order = c(0, 0, 1), period = 52))
-mod_test4 <- arima(ts2, order = c(5,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test5 <- arima(ts2, order = c(4,1,3), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test6 <- arima(ts2, order = c(4,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test1 <- arima(ts2, order = c(4,1,2), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(ts2, order = c(4,2,2), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test3 <- arima(ts2, order = c(4,1,2), 
+                   seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test4 <- arima(ts2, order = c(5,1,2), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test5 <- arima(ts2, order = c(4,1,3), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(ts2, order = c(4,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
 
 AIC(mod_test1)
 AIC(mod_test2)
@@ -262,11 +268,12 @@ plot(c(ts1, preds2_1), type = "l")
 #there was not a difference between the graphs, but we ended up choosing model 1 because we found that
 #the AIC and BIC were fairly close to that of model 6
 
-write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
+write.table(preds2, sep = ",", col.names = FALSE, 
+            row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
 ```
 
 ##Q2 Code
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 #Loading the Data:
 data2 <- read.csv("q2_train.csv", as.is = TRUE)
 plot(data2$activity, type = 'l')
@@ -315,12 +322,15 @@ sum(mse4)/4
 sum(mse5)/4
 sum(mse6)/4
 
-mod_test1 <- arima(ts2_adj, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(ts2_adj, order = c(2,1,0), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test1 <- arima(ts2_adj, order = c(2,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(ts2_adj, order = c(2,1,0), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test3 <- arima(ts2_adj, order = c(2,1,2))
 mod_test4 <- arima(ts2_adj, order = c(2,1,1))
 mod_test5 <- arima(ts2_adj, order = c(3,1,2))
-mod_test6 <- arima(ts2_adj, order = c(1,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(ts2_adj, order = c(1,1,2), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
 
 AIC(mod_test1)
 AIC(mod_test2)
@@ -341,11 +351,12 @@ preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts2, preds2_1), type = "l")
 
-write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q2_Bryana_Gutierrez_24504003.txt")
+write.table(preds2, sep = ",", col.names = FALSE, 
+            row.names = FALSE, file = "Q2_Bryana_Gutierrez_24504003.txt")
 ```
 
 ##Q3 Code
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 #Loading the Data:
 data3 <- read.csv("q3_train.csv", as.is = TRUE)
 plot(data3$activity, type = 'l')
@@ -394,12 +405,17 @@ sum(mse4)/4
 sum(mse5)/4
 sum(mse6)/4
 
-mod_test1 <- arima(ts3_adj, order = c(3,1,3), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(ts2_adj, order = c(3,1,3), seasonal = list(order = c(1, 0, 2), period = 52))
-mod_test3 <- arima(ts3_adj, order = c(3,1,3), seasonal = list(order = c(0, 0, 1), period = 52))
-mod_test4 <- arima(ts3_adj, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test1 <- arima(ts3_adj, order = c(3,1,3), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(ts2_adj, order = c(3,1,3), 
+                   seasonal = list(order = c(1, 0, 2), period = 52))
+mod_test3 <- arima(ts3_adj, order = c(3,1,3), 
+                   seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test4 <- arima(ts3_adj, order = c(2,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
 mod_test5 <- arima(ts3_adj, order = c(3,1,2))
-mod_test6 <- arima(ts3_adj, order = c(1,1,2), seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(ts3_adj, order = c(1,1,2), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
 
 AIC(mod_test1)
 AIC(mod_test2)
@@ -420,11 +436,12 @@ preds <- predict(mod_test6, n.ahead = 104)
 preds2 <- (preds$pred)^2 - 1.5
 plot(c(ts3, preds2), type = "l")
 
-write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q3_Bryana_Gutierrez_24504003.txt")
+write.table(preds2, sep = ",", col.names = FALSE, 
+            row.names = FALSE, file = "Q3_Bryana_Gutierrez_24504003.txt")
 ```
 
 ##Q4 Code
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 #Loading the Data:
 data4 <- read.csv("q4_train.csv", as.is = TRUE)
 plot(data4$activity, type = 'l')
@@ -491,12 +508,18 @@ sum(mse6)/4
 
 
 #Let us check AIC and BIC to see what model is chosen
-mod_test1 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test3 <- arima(log_ts4, order = c(3,1,4), seasonal = list(order = c(1, 1, 1), period = 52))
-mod_test4 <- arima(log_ts4, order = c(3,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
-mod_test5 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test6 <- arima(log_ts4, order = c(0,1,1), seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test1 <- arima(log_ts4, order = c(3,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(log_ts4, order = c(3,1,4), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test3 <- arima(log_ts4, order = c(3,1,4), 
+                   seasonal = list(order = c(1, 1, 1), period = 52))
+mod_test4 <- arima(log_ts4, order = c(3,1,1), 
+                   seasonal = list(order = c(0, 0, 1), period = 52))
+mod_test5 <- arima(log_ts4, order = c(0,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(log_ts4, order = c(0,1,1), 
+                   seasonal = list(order = c(0, 0, 1), period = 52))
 
 
 AIC(mod_test1)
@@ -521,11 +544,12 @@ preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_4, preds2), type = "l")
 
 
-write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q4_Bryana_Gutierrez_24504003.txt")
+write.table(preds2, sep = ",", col.names = FALSE, 
+            row.names = FALSE, file = "Q4_Bryana_Gutierrez_24504003.txt")
 ```
 
 ##Q5 Code
-```{r, echo = FALSE, eval = FALSE}
+```{r, eval = FALSE}
 #Loading the Data:
 data5 <- read.csv("q5_train.csv", as.is = TRUE)
 plot(data5$activity, type = 'l')
@@ -581,12 +605,18 @@ sum(mse5)/4
 sum(mse6)/4
 
 #Let us check AIC and BIC to see what model is chosen
-mod_test1 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test2 <- arima(log_ts5, order = c(3,1,5), seasonal = list(order = c(1, 1, 1), period = 52))
-mod_test3 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test4 <- arima(log_ts5, order = c(2,1,1), seasonal = list(order = c(1, 1, 1), period = 52))
-mod_test5 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(1, 0, 1), period = 52))
-mod_test6 <- arima(log_ts5, order = c(0,1,1), seasonal = list(order = c(1, 1, 1), period = 52))
+mod_test1 <- arima(log_ts5, order = c(3,1,5), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test2 <- arima(log_ts5, order = c(3,1,5), 
+                   seasonal = list(order = c(1, 1, 1), period = 52))
+mod_test3 <- arima(log_ts5, order = c(2,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test4 <- arima(log_ts5, order = c(2,1,1), 
+                   seasonal = list(order = c(1, 1, 1), period = 52))
+mod_test5 <- arima(log_ts5, order = c(0,1,1), 
+                   seasonal = list(order = c(1, 0, 1), period = 52))
+mod_test6 <- arima(log_ts5, order = c(0,1,1), 
+                   seasonal = list(order = c(1, 1, 1), period = 52))
 
 
 AIC(mod_test1)
@@ -610,5 +640,6 @@ preds <- predict(mod_test1, n.ahead = 104)
 preds2 <- exp(preds$pred) - 1.5
 plot(c(ts_5, preds2), type = "l")
 
-write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q5_Bryana_Gutierrez_24504003.txt")
+write.table(preds2, sep = ",", col.names = FALSE, 
+            row.names = FALSE, file = "Q5_Bryana_Gutierrez_24504003.txt")
 ```
