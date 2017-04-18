@@ -97,8 +97,8 @@ preds_1 <- predict(mod_test1, n.ahead = 104)
 preds2_1 <- exp(preds_1$pred) - 1.5
 plot(c(ts1, preds2_1), type = "l")
 
-#there was not a difference between the graphs, but we ended up choosing model 1 because we found that
-#the AIC and BIC were fairly close to that of model 6
+#there was not a difference between the graphs, but we ended up choosing model 6 because we found that
+#the AIC and BIC were fairly close to that of model 1
 
 write.table(preds2, sep = ",", col.names = FALSE, row.names = FALSE, file = "Q1_Bryana_Gutierrez_24504003.txt")
 
